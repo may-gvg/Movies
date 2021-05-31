@@ -1,3 +1,5 @@
+from datetime import datetime
+
 
 #A teraz coś z zupełnie innej beczki. Wyobraź sobie, że tworzysz system obsługujący bibliotekę filmów i seriali.
 # Wykorzystaj wiedzę na temat programowania obiektowego i napisz program, który spełnia następujące założenia:
@@ -21,20 +23,20 @@
 
 import random
 
-class filmy:
-    def __init__(self, tytuł, Rok_wydania, Gatunek, Liczba_odtworzeń):
-        self.tytuł = tytuł
-        self.Rok_wydania = Rok_wydania
-        self.Gatunek = Gatunek
-        self.Liczba_odtworzeń = Liczba_odtworzeń
+class Film:
+    def __init__(self, tytul, rok_wydania, gatunek, liczba_odtworzen):
+        self.tytul = tytul
+        self.rok_wydania = rok_wydania
+        self.gatunek = gatunek
+        self.liczba_odtworzen = liczba_odtworzen
     # Filmy i seriale mają metodę play, która zwiększa liczbę odtworzeń danego tytułu o 1.
 
 
 
     def play(self):
-        self.Liczba_odtworzeń = self.Liczba_odtworzeń + 1
+        self.liczba_odtworzen = self.liczba_odtworzen + 1
     def __str__(self):
-        return f"{self.tytuł} {self.Rok_wydania} {self.Liczba_odtworzeń} "
+        return f"{self.tytul} {self.rok_wydania} {self.liczba_odtworzen} "
 
 #Po wyświetleniu serialu jako string pokazują się informacje o konkretnym odcinku, np.: “The Simpsons S01E05” (gdzie po S pokazany jest numer sezonu
 # w notacji dwucyfrowej, natomiast po E - numer odcinka, również w zapisie dwucyfrowym). Po wyświetleniu filmu jako string widoczne są tytuł i rok wydania
@@ -42,23 +44,23 @@ class filmy:
 # Przechowuje filmy i seriale w jednej liście.
 
 
-class seriale(filmy):
-    def __init__(self, Numer_odcinka, Numer_sezonu, *args, **kwargs):
+class Serial(Film):
+    def __init__(self, numer_odcinka, numer_sezonu, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.Numer_odcinka = Numer_odcinka
-        self.Numer_sezonu = Numer_sezonu
+        self.numer_odcinka = numer_odcinka
+        self.numer_sezonu = numer_sezonu
     def __str__(self):
-        return f"{self.tytuł} S{self.Numer_odcinka:02}E{self.Numer_sezonu:02} {self.Liczba_odtworzeń}"
+        return f"{self.tytul} S{self.numer_odcinka:02}E{self.numer_sezonu:02} {self.liczba_odtworzen}"
 
 
-film_1 = filmy (tytuł="Comando", Rok_wydania=1981, Gatunek="True shit", Liczba_odtworzeń=123)
-film_2 = filmy (tytuł="Natural Born Killers", Rok_wydania=1993, Gatunek="True shit", Liczba_odtworzeń=21)
-film_3 = filmy (tytuł="FIght Club", Rok_wydania=1996, Gatunek="Sociodelic", Liczba_odtworzeń=34)
+film_1 = Film (tytul="Commando", rok_wydania=1981, gatunek="True shit", liczba_odtworzen=123)
+film_2 = Film (tytul="Natural Born Killers", rok_wydania=1993, gatunek="True shit", liczba_odtworzen=21)
+film_3 = Film (tytul="FIght Club", rok_wydania=1996, gatunek="Sociodelic", liczba_odtworzen=34)
 
-serial_1 = seriale (tytuł="Twin Peaks", Rok_wydania=1990, Gatunek="Thriler", Numer_odcinka=1, Numer_sezonu=1, Liczba_odtworzeń=66)
-serial_2 = seriale (tytuł="Twin Peaks", Rok_wydania=1990, Gatunek="Thriler", Numer_odcinka=2, Numer_sezonu=1, Liczba_odtworzeń=66)
-serial_3 = seriale (tytuł="Twin Peaks", Rok_wydania=1990, Gatunek="Thriler", Numer_odcinka=3, Numer_sezonu=1, Liczba_odtworzeń=66)
-serial_4 = seriale (tytuł="Star Wars", Rok_wydania=1993, Gatunek="Fantasy", Numer_odcinka=5, Numer_sezonu=2, Liczba_odtworzeń=0)
+serial_1 = Serial (tytul="Twin Peaks", rok_wydania=1990, gatunek="Thriler", numer_odcinka=1, numer_sezonu=1, liczba_odtworzen=66)
+serial_2 = Serial (tytul="Twin Peaks", rok_wydania=1990, gatunek="Thriler", numer_odcinka=2, numer_sezonu=1, liczba_odtworzen=66)
+serial_3 = Serial (tytul="Twin Peaks", rok_wydania=1990, gatunek="Thriler", numer_odcinka=3, numer_sezonu=1, liczba_odtworzen=66)
+serial_4 = Serial (tytul="Star Wars", rok_wydania=1993, gatunek="Fantasy", numer_odcinka=5, numer_sezonu=2, liczba_odtworzen=0)
 
 lista = [film_1, film_2, film_3, serial_1, serial_2, serial_3, serial_4]
 
@@ -69,52 +71,59 @@ lista = [film_1, film_2, film_3, serial_1, serial_2, serial_3, serial_4]
 
 def get_movies(lista):
     for i in lista:
-        if str(type(i)) == "<class '__main__.filmy'>":
+        if type(i) is Film:
             print(i)
 
 def get_series(lista):
     for i in lista:
-        if str(type(i)) == "<class '__main__.seriale'>":
+        if type(i) is Serial:
             print(i)
 
+print('get_movies')
 get_movies(lista)
+print('get_series')
 get_series(lista)
-
+print('koniec')
 # Napisz funkcję search, która wyszukuje film lub serial po jego tytule.
 
 
-def search (lista):
-    x = input("podaj tytuł: ")
+def search (lista, wynik):
+    l = []
     for i in lista:
+        if i.tytul.lower().find(wynik.lower()) != -1:
+            l.append(i)
+    return l
 
-        if x == i.tytuł:
-            print (i)
+print('twin peaks')
+wynik = input("podaj nazwę filmu:  ")
+l = search(lista, wynik)
 
-search(lista)
-
+for i in l:
+    print (i)
+search (lista,wynik)
 
 print ("")
 print ("")
 
 #Napisz funkcję generate_views, która losowo wybiera element z biblioteki, a następnie dodaje mu losową (z zakresu od 1 do 100) ilość odtworzeń.
 
-
+print ("losowy start")
 def generate_views(lista):
     x = len(lista)
-    y = random.randrange(0, x - 1)
+    y = random.choice(range(x))
     losowy = lista[y]
-    losowy.Liczba_odtworzeń = random.randrange(1, 100)
-    print(losowy)
+    losowy.liczba_odtworzen += random.randrange(1, 100)
 
 generate_views(lista)
 
-("")
-("")
+print ('losowy end')
+# random choice
+
 
 # Napisz funkcję, która uruchomi generate_views 10 razy.
 
 def gen10(lista):
-    for i in range(9):
+    for i in range(10):
         generate_views(lista)
 
 gen10(lista)
@@ -125,37 +134,84 @@ print ("top_titles")
 # Napisz funkcję top_titles(), która zwróci wybraną ilość najpopularniejszych
 # tytułów z biblioteki.
 
-def top_titles(lista, rodzaj):
-    lista2 = sorted(lista, key=lambda lista: lista.Liczba_odtworzeń)
-    lista3 = reversed(lista2)
 
+
+def top_titles(lista, rodzaj, ilosc):
+    lista2 = sorted(lista, key=lambda lista: lista.liczba_odtworzen, reverse=True)
+
+    l = []
     x = 0
-    for i in lista3:
+    for i in lista2:
+        if rodzaj == "filmy" and type(i) is Film:
+            x = x + 1
+            l.append(i)
+        if rodzaj == "seriale" and type(i) is Serial:
+            x = x + 1
+            l.append(i)
+        if x == ilosc:
+            return(l)
+    return(l)
+
+def top_titles2(lista, ilosc):
+    lista2 = sorted(lista, key=lambda lista: lista.liczba_odtworzen, reverse=True)
+
+    l = []
+    x = 0
+    for i in lista2:
         x = x + 1
-        if rodzaj == 'filmy' and str(type(i)) == "<class '__main__.filmy'>":
-            print(i)
-        if rodzaj == 'seriale' and str(type(i)) == "<class '__main__.seriale'>":
-            print(i)
-        if x == 10:
-            break
+        l.append(i)
+        if x == ilosc:
+            return(l)
+    return(l)
 
-top_titles(lista, 'seriale')
 
-top_titles(lista, 'filmy')
+tt = top_titles(lista, 'seriale', 2)
+print("2 najlepszych seriali")
+for i in tt:
+    print(i)
 
+tt = top_titles(lista, 'filmy', 2)
+print("2 najlepszych filmow")
+for i in tt:
+    print(i)
+
+print('koniec')
 
 # Napisz funkcję, która za pomocą pętli dodaje pełne sezony seriali do biblioteki.
 # Funkcja powinna przyjmować parametry takie jak: tytuł serialu, rok wydania, gatunek, numer sezonu, liczba odcinków do dodania.
 
 def dodaj_seriale(lista, tytul, rok_wydania, gatunek, liczba_odcinkow, sezon):
     for i in range(1, liczba_odcinkow + 1):
-        serial = seriale(tytuł=tytul, Rok_wydania=rok_wydania, Gatunek=gatunek, Numer_odcinka=i, Numer_sezonu=sezon, Liczba_odtworzeń=0)
-        lista.append(serial)
+        serial1 = Serial (tytul=tytul, rok_wydania=rok_wydania, gatunek=gatunek, numer_odcinka=i, numer_sezonu=sezon, liczba_odtworzen=0)
+        lista.append(serial1)
 
 dodaj_seriale(lista, "Dexter", 1999, "Horror", 10, 1)
 
 for i in lista:
     print(i)
 
-exit()
+print("--------------------------------------------------")
+print("Biblioteka filmów")
 
+film_1 = Film (tytul="Commando", rok_wydania=1981, gatunek="True shit", liczba_odtworzen=123)
+film_2 = Film (tytul="Natural Born Killers", rok_wydania=1993, gatunek="True shit", liczba_odtworzen=21)
+film_3 = Film (tytul="FIght Club", rok_wydania=1996, gatunek="Sociodelic", liczba_odtworzen=34)
+serial_1 = Serial (tytul="Twin Peaks", rok_wydania=1990, gatunek="Thriler", numer_odcinka=1, numer_sezonu=1, liczba_odtworzen=66)
+serial_2 = Serial (tytul="Twin Peaks", rok_wydania=1990, gatunek="Thriler", numer_odcinka=2, numer_sezonu=1, liczba_odtworzen=66)
+serial_3 = Serial (tytul="Twin Peaks", rok_wydania=1990, gatunek="Thriler", numer_odcinka=3, numer_sezonu=1, liczba_odtworzen=66)
+serial_4 = Serial (tytul="Star Wars", rok_wydania=1993, gatunek="Fantasy", numer_odcinka=5, numer_sezonu=2, liczba_odtworzen=0)
+
+lista = [film_1, film_2, film_3, serial_1, serial_2, serial_3, serial_4]
+
+for i in range(len(lista)):
+    generate_views(lista)
+
+now = datetime.now() # current date and time
+
+data = now.strftime("%d.%m.%Y")
+
+print("Najpopularniejsze filmy i seriale dnia " + data)
+
+l = top_titles2(lista, 3)
+for i in l:
+    print(i)
