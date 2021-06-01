@@ -1,3 +1,4 @@
+
 from datetime import datetime
 
 
@@ -90,9 +91,10 @@ print('koniec')
 def search (lista, wynik):
     l = []
     for i in lista:
-        if i.tytul.lower().find(wynik.lower()) != -1:
+        if wynik.lower() in i.tytul.lower():
             l.append(i)
     return l
+
 
 print('twin peaks')
 wynik = input("podaj nazwę filmu:  ")
@@ -109,9 +111,7 @@ print ("")
 
 print ("losowy start")
 def generate_views(lista):
-    x = len(lista)
-    y = random.choice(range(x))
-    losowy = lista[y]
+    losowy = random.choice(lista)
     losowy.liczba_odtworzen += random.randrange(1, 100)
 
 generate_views(lista)
@@ -140,15 +140,10 @@ def top_titles(lista, rodzaj, ilosc):
     lista2 = sorted(lista, key=lambda lista: lista.liczba_odtworzen, reverse=True)
 
     l = []
-    x = 0
     for i in lista2:
-        if rodzaj == "filmy" and type(i) is Film:
-            x = x + 1
+        if type(i) is rodzaj:
             l.append(i)
-        if rodzaj == "seriale" and type(i) is Serial:
-            x = x + 1
-            l.append(i)
-        if x == ilosc:
+        if len(l) == ilosc:
             return(l)
     return(l)
 
@@ -165,12 +160,12 @@ def top_titles2(lista, ilosc):
     return(l)
 
 
-tt = top_titles(lista, 'seriale', 2)
+tt = top_titles(lista, Serial, 2)
 print("2 najlepszych seriali")
 for i in tt:
     print(i)
 
-tt = top_titles(lista, 'filmy', 2)
+tt = top_titles(lista, Film, 2)
 print("2 najlepszych filmow")
 for i in tt:
     print(i)
