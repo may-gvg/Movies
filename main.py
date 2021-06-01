@@ -144,8 +144,8 @@ def top_titles(lista, rodzaj, ilosc):
         if type(i) is rodzaj:
             l.append(i)
         if len(l) == ilosc:
-            return(l)
-    return(l)
+            return l
+    return l
 
 def top_titles2(lista, ilosc):
     lista2 = sorted(lista, key=lambda lista: lista.liczba_odtworzen, reverse=True)
@@ -156,8 +156,8 @@ def top_titles2(lista, ilosc):
         x = x + 1
         l.append(i)
         if x == ilosc:
-            return(l)
-    return(l)
+            return l
+    return l
 
 
 tt = top_titles(lista, Serial, 2)
